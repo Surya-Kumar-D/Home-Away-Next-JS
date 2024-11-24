@@ -65,6 +65,12 @@
   }
 }
 
+@layer components {
+  .container {
+    @apply mx-auto max-w-6xl xl:max-w-7xl px-8;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
