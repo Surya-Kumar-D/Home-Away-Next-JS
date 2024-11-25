@@ -1,25 +1,21 @@
 import { SubmitButton } from "@/components/form/Buttons";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-const createProfileAction = async (formData: FormData) => {
-  "use server";
-  console.log(formData.get("firstName"));
-};
+import FormContainer from "@/components/form/FormContainer";
+import FormInput from "@/components/form/FormInput";
+import { createProfileAction } from "@/utils/actions";
 
 function CreatePageProfile() {
   return (
     <section>
       <h1 className="mb-8 text-2xl font-semibold capitalize">new user</h1>
-      <div className="border p-8 rounded-md max-w-lg">
-        <form action={createProfileAction}>
-          <div className="mb-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input name="firstName" id="firstName" type="text" />
+      <div className="border p-8 rounded-md ">
+        <FormContainer action={createProfileAction}>
+          <div className="grid md:grid-cols-2 gap-4">
+            <FormInput name="firstName" type="text" label="First Name" />
+            <FormInput name="lastName" type="text" label="Last Name" />
+            <FormInput name="userName" type="text" label="User Name" />
           </div>
-
-          <SubmitButton text="Create Profile" />
-        </form>
+          <SubmitButton text="Create Profile" className="mt-8" />
+        </FormContainer>
       </div>
     </section>
   );
