@@ -1,3 +1,4 @@
+import AmenitiesInput from "@/components/form/AmenitiesInput";
 import { SubmitButton } from "@/components/form/Buttons";
 import CategoriesInput from "@/components/form/CategoriesInput";
 import CounterInput from "@/components/form/CounterInput";
@@ -50,8 +51,9 @@ function page() {
           <CounterInput details="bedrooms" />
           <CounterInput details="beds" />
           <CounterInput details="baths" />
-
-          <SubmitButton text="create rental" size="lg" />
+          <h3 className="text-lg mt-10 mb-6 font-medium">Amenities</h3>
+          <AmenitiesInput />
+          <SubmitButton text="create rental" size="lg" className="mt-12" />
         </FormContainer>
       </div>
     </section>
