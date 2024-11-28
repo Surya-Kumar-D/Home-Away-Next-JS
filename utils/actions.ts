@@ -1,5 +1,10 @@
 "use server";
-import { imageSchema, profileSchema, validateWithZodSchema } from "./schemas";
+import {
+  imageSchema,
+  profileSchema,
+  propertySchema,
+  validateWithZodSchema,
+} from "./schemas";
 import prisma from "./db";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -130,4 +135,21 @@ export const updateProfileImageAction = async (
   } catch (error) {
     return renderError(error);
   }
+};
+
+export const createPropertyAction = async (
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string }> => {
+  const user = await getAuthUser();
+  try {
+    const rawData = Object.fromEntries(formData);
+    console.log(rawData);
+    const validateData = validateWithZodSchema(propertySchema, rawData);
+    console.log(validateData);
+    return { message: "Property Uploaded Successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+  //   redirect("/")
 };
