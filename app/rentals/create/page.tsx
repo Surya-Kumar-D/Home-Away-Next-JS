@@ -1,5 +1,6 @@
 import { SubmitButton } from "@/components/form/Buttons";
 import CategoriesInput from "@/components/form/CategoriesInput";
+import CounterInput from "@/components/form/CounterInput";
 import CountriesInput from "@/components/form/CountriesInput";
 import FormContainer from "@/components/form/FormContainer";
 import FormInput from "@/components/form/FormInput";
@@ -41,6 +42,15 @@ function page() {
             <CountriesInput />
             <ImageInput />
           </div>
+
+          <h3 className="font-medium mt-8 mb-4 text-lg">
+            Accommodation Details
+          </h3>
+          <CounterInput details="guests" />
+          <CounterInput details="bedrooms" />
+          <CounterInput details="beds" />
+          <CounterInput details="baths" />
+
           <SubmitButton text="create rental" size="lg" />
         </FormContainer>
       </div>
