@@ -189,6 +189,9 @@ export const fetchProperties = async ({
       country: true,
       price: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return properties;
 };
