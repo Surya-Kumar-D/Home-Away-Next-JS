@@ -17,7 +17,11 @@ function CountriesInput({ defaultValue }: { defaultValue?: string }) {
       <Label htmlFor={name} className="capitalize">
         Country
       </Label>
-      <Select defaultValue={defaultValue || formattedCountries[0].code}>
+      <Select
+        defaultValue={defaultValue || formattedCountries[0].code}
+        name={name}
+        required
+      >
         <SelectTrigger id={name}>
           <SelectValue />
         </SelectTrigger>

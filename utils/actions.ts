@@ -144,12 +144,24 @@ export const createPropertyAction = async (
   const user = await getAuthUser();
   try {
     const rawData = Object.fromEntries(formData);
-    console.log(rawData);
+    const rawImage = formData.get("image") as File;
     const validateData = validateWithZodSchema(propertySchema, rawData);
-    console.log(validateData);
-    return { message: "Property Uploaded Successfully" };
+    const validateImage = validateWithZodSchema(imageSchema, {
+      image: rawImage,
+    });
+    const fullPath = await uploadImage(validateImage.image);
+    console.log(fullPath);
+    await prisma.property.create({
+      data: {
+        ...validateData,
+        image: fullPath,
+        profileId: user.id,
+      },
+    });
   } catch (error) {
+    console.log(error);
+
     return renderError(error);
   }
-  //   redirect("/")
+  redirect("/");
 };
