@@ -35,7 +35,8 @@ function PropertyCards({ property }: { property: PropertyCardProps }) {
           <p className="text-sm mt-1">
             <span className="font-semibold">{formatCurrency(price)}</span> night
           </p>
-          {/* {coutnry and flag} */}
+          {/* {country and flag} */}
+          <CountryFlagAndName countryCode={country} />
         </div>
       </Link>
       <div className="absolute top-5 right-5 z-5">
