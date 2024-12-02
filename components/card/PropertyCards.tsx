@@ -26,20 +26,21 @@ function PropertyCards({ property }: { property: PropertyCardProps }) {
             {name.substring(0, 30)}
           </h3>
           {/* {Property Rating} */}
+          <PropertyRating inPage={false} propertyId={propertyId} />
         </div>
         <p className="text-sm mt-1 text-muted-foreground">
           {tagline.substring(0, 40)}
         </p>
         <div className="flex justify-between items-center">
           <p className="text-sm mt-1">
-            <span className="font-semibold">{formatCurrency(price)}</span>
-            night{" "}
+            <span className="font-semibold">{formatCurrency(price)}</span> night
           </p>
           {/* {coutnry and flag} */}
         </div>
       </Link>
-      <div className="absolute top-0 right-5 z-5">
+      <div className="absolute top-5 right-5 z-5">
         {/* {favorite toggle button} */}
+        <FavoriteToggleButton propertyId={propertyId} />
       </div>
     </article>
   );
