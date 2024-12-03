@@ -195,3 +195,46 @@ export const fetchProperties = async ({
   });
   return properties;
 };
+
+export const fetchFavoriteId = async (propertyId: string) => {
+  const user = await getAuthUser();
+  const favorite = await prisma.favorite.findFirst({
+    where: {
+      propertyId,
+      profileId: user.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return favorite?.id || null;
+};
+
+export const toggleFavoriteAction = async (prevState: {
+  propertyId: string;
+  favoriteId: string | null;
+  pathName: string;
+}) => {
+  const { favoriteId, pathName, propertyId } = prevState;
+  const user = await getAuthUser();
+  try {
+    if (favoriteId) {
+      await prisma.favorite.delete({
+        where: {
+          id: favoriteId,
+        },
+      });
+    } else {
+      await prisma.favorite.create({
+        data: {
+          profileId: user.id,
+          propertyId,
+        },
+      });
+    }
+    revalidatePath(pathName);
+    return { message: favoriteId ? "Removed from faves" : "Add to faves" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
