@@ -260,3 +260,14 @@ export const fetchFavorites = async () => {
   });
   return favorites.map((favorite) => favorite.property);
 };
+
+export const fetchPropertyDetails = async (id: string) => {
+  return await prisma.property.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      profile: true,
+    },
+  });
+};
