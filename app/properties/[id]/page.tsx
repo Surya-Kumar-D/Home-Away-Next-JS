@@ -1,11 +1,14 @@
 import FavoriteToggleButton from "@/components/card/FavoriteToggleButton";
 import PropertyRating from "@/components/card/PropertyRating";
+import Amenities from "@/components/properties/Amenities";
 import BookingCalendar from "@/components/properties/BookingCalendar";
 import BreadCrumbs from "@/components/properties/BreadCrumbs";
+import Description from "@/components/properties/Description";
 import ImageContainer from "@/components/properties/ImageContainer";
 import PropertyDetails from "@/components/properties/PropertyDetails";
 import ShareButton from "@/components/properties/ShareButton";
 import UserInfo from "@/components/properties/UserInfo";
+import { Separator } from "@/components/ui/separator";
 import { fetchPropertyDetails } from "@/utils/actions";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -13,7 +16,8 @@ import React from "react";
 async function PropertyDetailsPage({ params }: { params: { id: string } }) {
   const id = params.id;
   const property = await fetchPropertyDetails(id)!;
-  const { beds, bedrooms, guests, baths, image, name } = property!;
+  const { beds, bedrooms, amenities, description, guests, baths, image, name } =
+    property!;
   const details = { beds, baths, bedrooms, guests };
   const { firstName, profileImage } = property?.profile!;
   if (!params) redirect("/");
@@ -28,7 +32,7 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
         </div>
       </header>
       <ImageContainer mainImage={image} name={name} />
-      <UserInfo profile={{ firstName, profileImage }} />
+
       <section className="lg:grid lg:grid-cols-12 gap-x-12 mt-12">
         <div className="lg:col-span-8">
           <div className="flex gap-x-4 items-center">
@@ -36,6 +40,10 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
             <PropertyRating inPage propertyId={id} />
           </div>
           <PropertyDetails details={details} />
+          <UserInfo profile={{ firstName, profileImage }} />
+          <Separator className="mt-4" />
+          <Description description={description} />
+          <Amenities amenities={amenities} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
