@@ -13,9 +13,10 @@ import { uploadImage } from "./supabase";
 
 const getAuthUser = async () => {
   const user = await currentUser();
+
   if (!user) throw new Error("You must be logged in to access this route.");
 
-  if (!user?.privateMetadata?.hasProfile) redirect("/profile/create");
+  if (!user.privateMetadata.hasProfile) redirect("/profile/create");
   return user;
 };
 
@@ -197,7 +198,9 @@ export const fetchProperties = async ({
 };
 
 export const fetchFavoriteId = async (propertyId: string) => {
-  const user = await getAuthUser();
+  const user = await currentUser();
+  if (!user) return null;
+
   const favorite = await prisma.favorite.findFirst({
     where: {
       propertyId,
