@@ -333,6 +333,7 @@ export const fetchPropertyReviewsByUser = async () => {
       property: {
         select: {
           image: true,
+          name: true,
         },
       },
     },

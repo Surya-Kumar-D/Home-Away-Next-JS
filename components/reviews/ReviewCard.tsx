@@ -32,7 +32,7 @@ function ReviewCard({ reviewInfo, children }: ReviewCardProps) {
         <Comment comment={reviewInfo.comment} />
       </CardContent>
       {/* {dele button later} */}
-      <div className="absoltue top-3 right-3">{children}</div>
+      <div className="absolute top-3 right-3">{children}</div>
     </Card>
   );
 }
