@@ -8,6 +8,8 @@ import ImageContainer from "@/components/properties/ImageContainer";
 import PropertyDetails from "@/components/properties/PropertyDetails";
 import ShareButton from "@/components/properties/ShareButton";
 import UserInfo from "@/components/properties/UserInfo";
+import PropertyReviews from "@/components/reviews/PropertyReviews";
+import SubmitReview from "@/components/reviews/SubmitReview";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchPropertyDetails } from "@/utils/actions";
@@ -36,12 +38,13 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
     baths,
     image,
     name,
+    id: propertyId,
   } = property!;
   const details = { beds, baths, bedrooms, guests };
   const { firstName, profileImage } = property?.profile!;
   if (!params) redirect("/");
   return (
-    <div>
+    <section>
       <BreadCrumbs name={name} />
       <header className="flex justify-between items-center mt-4">
         <h1 className="text-4xl font-bold">{property?.tagline}</h1>
@@ -69,7 +72,9 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
           <BookingCalendar />
         </div>
       </section>
-    </div>
+      <SubmitReview propertyId={propertyId} />
+      <PropertyReviews propertyId={propertyId} />
+    </section>
   );
 }
 
