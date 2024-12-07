@@ -13,7 +13,13 @@ async function PropertyReviews({ propertyId }: { propertyId: string }) {
         {reviews.map((review) => {
           const { comment, rating } = review;
           const { firstName, profileImage } = review.profile;
-          return <ReviewCard key={review.id} />;
+          const reviewInfo = {
+            comment,
+            rating,
+            name: firstName,
+            image: profileImage,
+          };
+          return <ReviewCard key={review.id} reviewInfo={reviewInfo} />;
         })}
       </div>
     </div>
