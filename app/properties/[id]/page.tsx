@@ -12,7 +12,8 @@ import PropertyReviews from "@/components/reviews/PropertyReviews";
 import SubmitReview from "@/components/reviews/SubmitReview";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchPropertyDetails } from "@/utils/actions";
+import { fetchPropertyDetails, findExistingReview } from "@/utils/actions";
+import { auth } from "@clerk/nextjs/server";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -42,6 +43,10 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
   } = property!;
   const details = { beds, baths, bedrooms, guests };
   const { firstName, profileImage } = property?.profile!;
+  const { userId } = auth();
+  const isNotOwner = property?.profile.clerkId !== userId;
+  const reviewDoesNotExist =
+    userId && isNotOwner && !(await findExistingReview(userId, propertyId));
   if (!params) redirect("/");
   return (
     <section>
@@ -72,7 +77,8 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
           <BookingCalendar />
         </div>
       </section>
-      <SubmitReview propertyId={propertyId} />
+      {reviewDoesNotExist && <SubmitReview propertyId={propertyId} />}
+
       <PropertyReviews propertyId={propertyId} />
     </section>
   );
