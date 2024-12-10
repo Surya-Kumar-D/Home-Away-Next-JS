@@ -11,6 +11,7 @@ import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "./supabase";
+import { CalculateTotals } from "./calculateTotals";
 
 const getAuthUser = async () => {
   const user = await currentUser();
@@ -393,4 +394,42 @@ export const findExistingReview = async (
       propertyId,
     },
   });
+};
+
+export const createBookingAction = async (prevState: {
+  propertyId: string;
+  checkIn: Date;
+  checkOut: Date;
+}) => {
+  const user = await getAuthUser();
+  const { checkIn, checkOut, propertyId } = prevState!;
+  const property = await prisma.property.findUnique({
+    where: {
+      id: propertyId,
+    },
+    select: {
+      price: true,
+    },
+  });
+  if (!property) return { message: "Property not found" };
+  const { orderTotal, totalNights } = CalculateTotals({
+    checkIn,
+    checkOut,
+    price: property.price,
+  });
+  try {
+    const booking = await prisma.booking.create({
+      data: {
+        orderTotal,
+        totalNights,
+        checkIn,
+        checkOut,
+        profileId: user.id,
+        propertyId,
+      },
+    });
+  } catch (error) {
+    return renderError(error);
+  }
+  redirect("/bookings");
 };
