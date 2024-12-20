@@ -504,7 +504,7 @@ export const fetchRentals = async () => {
         },
       });
       return {
-        ...rentals,
+        ...rental,
         totalNightsSum: totalNightSum._sum.totalNights,
         orderTotalSum: orderTotalSum._sum.orderTotal,
       };
