@@ -472,3 +472,60 @@ export const deleteBookingAction = async (prevState: { bookingId: string }) => {
     return renderError(error);
   }
 };
+
+export const fetchRentals = async () => {
+  const user = await getAuthUser();
+  const rentals = await prisma.property.findMany({
+    where: {
+      profileId: user.id,
+    },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+    },
+  });
+  const rentalWithBookingsSums = await Promise.all(
+    rentals.map(async (rental) => {
+      const totalNightSum = await prisma.booking.aggregate({
+        where: {
+          propertyId: rental.id,
+        },
+        _sum: {
+          totalNights: true,
+        },
+      });
+      const orderTotalSum = await prisma.booking.aggregate({
+        where: {
+          propertyId: rental.id,
+        },
+        _sum: {
+          orderTotal: true,
+        },
+      });
+      return {
+        ...rentals,
+        totalNightsSum: totalNightSum._sum.totalNights,
+        orderTotalSum: orderTotalSum._sum.orderTotal,
+      };
+    })
+  );
+  return rentalWithBookingsSums;
+};
+
+export const deleteRentalAction = async (prevState: { propertyId: string }) => {
+  const { propertyId } = prevState;
+  const user = await getAuthUser();
+  try {
+    await prisma.property.delete({
+      where: {
+        id: propertyId,
+        profileId: user.id,
+      },
+    });
+    revalidatePath("/rentals");
+    return { message: "Rental deleted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
